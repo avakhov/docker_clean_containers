@@ -13,7 +13,7 @@ import (
 
 func doMain(prefix string) error {
 	// initialize docker client
-	dockerClient, err := client.NewClientWithOpts(client.FromEnv)
+	dockerClient, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
 	if err != nil {
 		return util.WrapError(err)
 	}
@@ -44,7 +44,7 @@ func doMain(prefix string) error {
 		if err != nil {
 			return util.WrapError(err)
 		}
-    fmt.Printf("Stopped container %s\n", containerID)
+		fmt.Printf("Stopped container %s\n", containerID)
 	}
 
 	// remove containers
@@ -54,7 +54,7 @@ func doMain(prefix string) error {
 		if err != nil {
 			return util.WrapError(err)
 		}
-    fmt.Printf("Removed container %s\n", containerID)
+		fmt.Printf("Removed container %s\n", containerID)
 	}
 
 	// out
@@ -62,6 +62,7 @@ func doMain(prefix string) error {
 }
 
 func main() {
+	fmt.Printf("docker_clean_containers version=%s\n", util.GetVersion())
 	if len(os.Args) < 2 {
 		fmt.Println("Usage ./docker_clean_containers <prefix>")
 		os.Exit(1)
